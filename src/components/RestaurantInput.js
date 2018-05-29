@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { addRestaurant } from '../actions/restaurants';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 export class RestaurantInput extends Component {
@@ -31,23 +32,29 @@ export class RestaurantInput extends Component {
 
   render() {
     return(
-      <form onSubmit={(event) => this.handleOnSubmit(event)}>
+      <form onSubmit={ this.handleOnSubmit.bind(this)}>
         <p>
           <input 
             type="text" 
-            onChange={(event) => this.handleOnNameChange(event)} 
+            onChange={ this.handleOnNameChange.bind(this)} 
             placeholder="restaurant name" />
         </p>
         <p>
           <input 
             type="text" 
-            onChange={(event) => this.handleOnLocationChange(event)} 
+            onChange={ this.handleOnLocationChange.bind(this)} 
             placeholder="location" />
         </p>
-        <input type="submit" />
+        <input type="submit" value="Submit" />
       </form>
     );
   }
 };
 
-export const ConnectedRestaurantInput = connect(null, null)(RestaurantInput)
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    addRestaurant: addRestaurant
+  }, dispatch);
+};
+
+export const ConnectedRestaurantInput = connect(null, mapDispatchToProps)(RestaurantInput)
